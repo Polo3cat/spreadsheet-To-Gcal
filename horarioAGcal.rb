@@ -25,7 +25,7 @@ eventCounter = 0
 
 #Change these values
 dayInitial = 10
-monthInitial = 4
+monthInitial = 3
 yearInitial = 2017
 hora = 12
 location = "Big Al's Barcelona"
@@ -45,13 +45,18 @@ CSV.foreach('./horario.csv') do |fila|
 
 	for i in 0..fila.length-1
 		if fila[i] != nil
-			eventCounter = eventCounter + 1
-			sujeto = fila[i]
-			fechaIni = $day.to_s + "/" + $month.to_s + "/" + $year.to_s
-			horaIni = hora.to_s + ":00"
-			horaFin = (hora + 1).to_s + ":00"
-			evento = %W[#{sujeto} #{fechaIni} #{horaIni} #{horaFin} #{location}]
-			csv << evento
+				celda = CSV.parse(fila[i])
+				celda = celda.shift
+				for j in 0..celda.length-1
+					eventCounter = eventCounter + 1
+					sujeto = celda[j]#cambiar por la variable correspondiente
+					sujeto = sujeto.gsub(/\s+/, "")
+					fechaIni = $day.to_s + "/" + $month.to_s + "/" + $year.to_s
+					horaIni = hora.to_s + ":00"
+					horaFin = (hora + 1).to_s + ":00"
+					evento = %W[#{sujeto} #{fechaIni} #{horaIni} #{horaFin} #{location}]
+					csv << evento
+				end
 		end
 		incrementarDia		
 	end
