@@ -22,25 +22,28 @@ end
 
 calendario = ["Subject","Start date", "Start time", "End time", "Location"]
 
+#change only these values
 dayInitial = 10
 monthInitial = 4
 yearInitial = 2017
 hora = 12
 location = "Big Al's Barcelona"
-
+########################
 require 'csv'
 
+#Change the name of the output file
 csv = CSV.open("./gcal.csv", "wb")
+#################################
 csv << calendario
-
+#Change the name of the input file
 CSV.foreach('./horario.csv') do |fila|
+##################################
 	$day = dayInitial
 	$month = monthInitial
 	$year = yearInitial
 
 	for i in 0..fila.length-1
 		if fila[i] != nil
-			puts fila[i]
 			sujeto = fila[i]
 			fechaIni = $day.to_s + "/" + $month.to_s + "/" + $year.to_s
 			horaIni = hora.to_s + ":00"
