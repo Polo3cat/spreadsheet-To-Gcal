@@ -4,13 +4,13 @@ A very basic tool to parse schedules in tables as csv into Google Calendar Event
 With this tool you may convert a table filled with events, names, etc, into Google Calendar Events.
 
 Input format:
----------------------------------
-|Day/Hour  1           2        |  
-|-------------------------------|
-|12:00     Alex    Alex, Dani   |
-|13:00     Alex    Alex, Dani   |
-|14:00     Alex    Alex, Dani   |
---------------------------------
+
+|Day/Hour|1      |2        |  
+|--------|------|----------|
+|12:00   |Alex  |Alex, Dani|
+|13:00   |Alex  |Alex, Dani|
+|14:00   |Alex  |Alex, Dani|
+
   ·For every name found it will create and event that ranges from the first time it appears on a day and ends when there are no more consecutive ones.
   ·For example: Alex will be shown with an event on day 1 from 12:00 to 15:00
   ·             Alex and Dani will have their own events on day two, both from 12:00 to 15:00
