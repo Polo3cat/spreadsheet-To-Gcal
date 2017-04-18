@@ -20,13 +20,16 @@ def incrementarDia
 	end														
 end
 
-calendario = ["Subject","Start date", "Start time", "End time", "Location"]
+#Global variables
+calendario = ["Subject", "Start date", "Start time","End date", "End time", "Location"]
 eventCounter = 0
+eventHash = {} 
+#################
 
 #Change these values
-dayInitial = 10
-monthInitial = 3
-yearInitial = 2017
+dayInitial = 1
+monthInitial = 1
+yearInitial = 2016
 hora = 12
 location = "Big Al's Barcelona"
 ########################
@@ -48,20 +51,37 @@ CSV.foreach('./horario.csv') do |fila|
 				celda = CSV.parse(fila[i])
 				celda = celda.shift
 				for j in 0..celda.length-1
-					eventCounter = eventCounter + 1
-					sujeto = celda[j]#cambiar por la variable correspondiente
+					sujeto = celda[j]
 					sujeto = sujeto.gsub(/\s+/, "")
 					fechaIni = $day.to_s + "/" + $month.to_s + "/" + $year.to_s
 					horaIni = hora.to_s + ":00"
 					horaFin = (hora + 1).to_s + ":00"
-					evento = %W[#{sujeto} #{fechaIni} #{horaIni} #{horaFin} #{location}]
-					csv << evento
+					prevEvent = %W[#{sujeto} #{fechaIni} #{horaIni}]
+					currEvent = %W[#{sujeto} #{fechaIni} #{horaFin}]
+					if eventHash.has_key?(prevEvent)	#busca un evento que acabara al comienzo de este
+						eventHash[currEvent] = eventHash[prevEvent]	#si existe crea una entrada nueva con la nueva hora de fin y la antiga de inicio
+						eventHash.delete(prevEvent)	#elimina la entrada anterior
+					else
+						eventHash[currEvent] = horaIni	#si no existe un evento que acababa cuando empieza lo crea
+					end
 				end
 		end
 		incrementarDia		
 	end
 	hora = hora + 1
 end
+
+eventHash.each do |key, value|
+	auxFin = key.pop()
+	evento = key
+	evento << value
+	evento << key[1]
+	evento << auxFin
+	evento << location
+	csv << evento
+	eventCounter += 1
+end
+
 if eventCounter > 0
 	puts "CONVERSION DONE!"
 	puts "There are #{eventCounter} events"
